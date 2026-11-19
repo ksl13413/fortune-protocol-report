@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Fortune Protocol 背景尽调</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f4f2; --paper:#ffffff; --ink:#17181a; --muted:#5c6068; --line:#dddcd6;
+  --red:#b42318; --red-bg:#fdf0ee; --amber:#8a5a00; --amber-bg:#fff6dd; --green:#17663a; --green-bg:#eaf6ee;
+  --dark:#17181a; --mono:'IBM Plex Mono',monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#121315; --paper:#1b1d20; --ink:#eceee9; --muted:#a7aba3; --line:#33363b; --red:#ff8a7a; --red-bg:#331d1a; --amber:#f0c35c; --amber-bg:#332a12; --green:#7ed6a0; --green-bg:#173326; --dark:#eceee9; }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans SC',system-ui,sans-serif;font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--red);text-decoration-thickness:1px;text-underline-offset:3px;word-break:break-all}
+button,[role="button"],summary{min-height:2.25rem}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px 72px}
+.mono{font-family:var(--mono);font-size:.82em;word-break:break-all}
+/* verdict hero */
+.hero{margin:0 -20px;padding:34px 20px 30px;background:var(--dark);color:#f2f1ec}
+@media(prefers-color-scheme:dark){.hero{background:#0b0c0d;border-bottom:1px solid var(--line)}}
+.hero-inner{max-width:1020px;margin:0 auto}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.65;margin:0 0 10px}
+.hero h1{font-family:'Noto Serif SC',serif;font-weight:900;font-size:clamp(30px,6vw,52px);line-height:1.15;margin:0 0 8px}
+.hero .sub{font-size:15px;opacity:.78;margin:0 0 22px;max-width:720px}
+.verdict-row{display:flex;flex-wrap:wrap;gap:14px;align-items:stretch}
+.verdict-badge{background:#b42318;color:#fff;padding:16px 20px;min-width:210px}
+.verdict-badge .v1{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+.verdict-badge .v2{font-family:'Noto Serif SC',serif;font-size:34px;font-weight:900;line-height:1.1}
+.verdict-badge .v3{font-size:13px;opacity:.9}
+.verdict-text{flex:1;min-width:260px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);padding:16px 18px;font-size:15.5px;line-height:1.7}
+.verdict-text strong{color:#ffd9d3}
+.meta-line{margin-top:16px;font-family:var(--mono);font-size:12px;opacity:.6}
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line);margin:0 -20px;padding:0 20px}
+nav .nav-in{max-width:1020px;margin:0 auto;display:flex;gap:4px;flex-wrap:wrap}
+nav a{flex:0 0 auto;color:var(--ink);text-decoration:none;font-size:13.5px;font-weight:700;padding:12px 10px;border-bottom:3px solid transparent}
+nav a:hover{border-bottom-color:var(--red);color:var(--red)}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:26px 0 8px}
+.stat{background:var(--paper);padding:16px}
+.stat .n{font-family:'Noto Serif SC',serif;font-size:clamp(20px,3.4vw,28px);font-weight:900;line-height:1.15}
+.stat .n.red{color:var(--red)} .stat .n.green{color:var(--green)}
+.stat .l{font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.5}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+/* sections */
+section{margin-top:44px}
+h2{font-family:'Noto Serif SC',serif;font-size:clamp(22px,4vw,30px);font-weight:900;line-height:1.3;margin:0 0 6px;padding-top:10px;border-top:3px solid var(--ink)}
+h2 .no{font-family:var(--mono);font-size:13px;color:var(--red);display:block;letter-spacing:.1em;margin-bottom:4px}
+.lede{color:var(--muted);font-size:15px;margin:0 0 18px;max-width:760px}
+h3{font-size:17px;font-weight:900;margin:26px 0 8px}
+p{margin:0 0 12px}
+.card{background:var(--paper);border:1px solid var(--line);padding:20px 22px;margin:14px 0}
+.card.red{border-left:6px solid var(--red)}
+.card.amber{border-left:6px solid #d9a400}
+.card.green{border-left:6px solid var(--green)}
+.callout{padding:14px 18px;margin:14px 0;font-size:15px}
+.callout.red{background:var(--red-bg)} .callout.amber{background:var(--amber-bg)} .callout.green{background:var(--green-bg)}
+.callout strong{display:block;margin-bottom:2px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;background:var(--paper);font-size:14.5px;margin:12px 0}
+th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+th{background:var(--bg);font-weight:900;font-size:13px}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl-wrap{overflow-x:auto}
+@media(max-width:640px){
+  .tbl-wrap table{min-width:0}
+  .stack-tbl thead{display:none}
+  .stack-tbl tr{display:block;border:1px solid var(--line);margin-bottom:10px;background:var(--paper)}
+  .stack-tbl td{display:block;border:none;border-bottom:1px dashed var(--line);padding:8px 12px}
+  .stack-tbl td:last-child{border-bottom:none}
+  .stack-tbl td::before{content:attr(data-l);display:block;font-size:11px;font-weight:900;color:var(--muted);letter-spacing:.06em}
+}
+ul,ol{margin:8px 0 14px;padding-left:22px}
+li{margin-bottom:7px}
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;border-radius:999px;vertical-align:middle;white-space:nowrap}
+.tag.red{color:var(--red)} .tag.green{color:var(--green)} .tag.amber{color:var(--amber)}
+.src{font-size:12.5px;color:var(--muted)}
+.src a{color:var(--muted)}
+/* timeline */
+.tl{border-left:2px solid var(--line);margin:16px 0 8px 8px;padding-left:22px}
+.tl div{position:relative;margin-bottom:16px}
+.tl div::before{content:"";position:absolute;left:-29px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:3px solid var(--red)}
+.tl .d{font-family:var(--mono);font-size:12.5px;color:var(--red);font-weight:600}
+.tl p{margin:2px 0 0;font-size:15px}
+/* checklist */
+.check{list-style:none;padding:0;margin:10px 0}
+.check li{background:var(--paper);border:1px solid var(--line);padding:12px 16px 12px 44px;position:relative;margin-bottom:8px;font-size:15px}
+.check li::before{content:"☐";position:absolute;left:16px;top:11px;font-size:18px;color:var(--red)}
+.check li b{color:var(--red)}
+details{background:var(--paper);border:1px solid var(--line);margin:10px 0}
+summary{cursor:pointer;font-weight:900;padding:12px 18px;min-height:44px;display:flex;align-items:center}
+details .det-in{padding:0 18px 14px;font-size:14.5px}
+footer{margin-top:52px;border-top:1px solid var(--line);padding-top:18px;font-size:13px;color:var(--muted)}
+.sources{font-size:13.5px}
+.sources li{margin-bottom:5px}
+.small{font-size:13.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="kicker">Background Check · 加密货币背景尽调</p>
+    <h1>Fortune Protocol<br>祖宗十八代都翻完了</h1>
+    <p class="sub">起因：QQ「Fortune场外群」（1202 人）里有人在买卖「积分」和「卡牌」——290 出「10w 积分 + 一张卡牌」、单卡 60–100 刀、还有人直说「卡牌不上线不值钱」。这份报告把项目本体、团队、融资、代币、审计、同名仿盘和场外骗局逐项查清。</p>
+    <div class="verdict-row">
+      <div class="verdict-badge">
+        <div class="v1">Verdict · 结论</div>
+        <div class="v2">高风险 RISKY</div>
+        <div class="v3">项目是真的 · 场外别碰</div>
+      </div>
+      <div class="verdict-text">
+        <strong>一句话：</strong>Fortune Protocol 是有机构融资的真项目，但代币 <strong>$FORTUNE 还没发</strong>——没有 TGE 日期、没有快照日期、没有兑换比例、没有官方合约地址。在 QQ 群里花钱买它的积分和卡牌，等于在零保障下赌一个没日期、没比例、没价格的空投。<strong>场外交易不建议参与。</strong>
+      </div>
+    </div>
+    <p class="meta-line">研究日期 2026-11-19（CST） · 官网实测 + 公开报道交叉核对 · 截图报价取自任务描述，报价本身未经独立核实</p>
+  </div>
+</header>
+
+<nav aria-label="目录"><div class="nav-in">
+  <a href="#identity">身份</a><a href="#team">团队与融资</a><a href="#token">代币</a><a href="#security">安全与审计</a><a href="#lookalikes">同名仿盘</a><a href="#otc">场外风险</a><a href="#sentiment">社区情绪</a><a href="#checklist">下手前清单</a><a href="#unknown">未核实</a><a href="#sources">来源</a>
+</div></nav>
+
+<div class="stats">
+  <div class="stat"><div class="n">&gt;$4M</div><div class="l">两轮融资总额（官方 2026-08-21 披露；单轮金额与估值均未披露）</div></div>
+  <div class="stat"><div class="n red">0</div><div class="l">$FORTUNE 流通量 —— 代币未上线、无价格、无官方合约地址</div></div>
+  <div class="stat"><div class="n">300 USDT</div><div class="l">Node NFT（卡牌）第二轮官方铸造价 · 总量 3,000 张</div></div>
+  <div class="stat"><div class="n red">−67%~−80%</div><div class="l">QQ 场外单卡报价 $60–100 相对官方铸造价的折价</div></div>
+  <div class="stat"><div class="n">40,000 F</div><div class="l">买一张 Node NFT 即时到账的基础积分 + 每日 1.1 倍加成</div></div>
+  <div class="stat"><div class="n">BBB</div><div class="l">CertiK 评分 —— 但只审了投票合约，团队未通过 CertiK 验证</div></div>
+  <div class="stat"><div class="n">1 次 / 天</div><div class="l">F 积分官方转账上限：每天 1 次，单次至多转余额的 99%</div></div>
+  <div class="stat"><div class="n red">未公布</div><div class="l">TGE 日期、快照日期、F 兑换比例、代币分配表 —— 全部没有</div></div>
+</div>
+
+<!-- 1 IDENTITY -->
+<section id="identity">
+  <h2><span class="no">01 / IDENTITY</span>截图里的项目，到底是什么</h2>
+  <p class="lede">假设成立，置信度高：官网、融资报道、CertiK、BNB Chain 官方目录 DappBay 四方一致。</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">本尊：Fortune Protocol（Fortune Cookie Protocol）</h3>
+    <p>官网 <a href="https://fortuneprotocol.io/">fortuneprotocol.io</a>，2026-11-19 实测可访问。定位是 <strong>BNB Chain 上的预测市场聚合协议</strong>，口号「Crack a cookie. Predict the future.」，页脚署名「© 2026 FORTUNE COOKIE PROTOCOL」，已集成 Polymarket 与 Predict.fun 的市场。官方 X 只有一个：<strong>@fortuneglobal_</strong>（简介「Built on BNB」，2026 年 3 月加入）。群头像上的「FPoints Transfer Feature」与官网积分转账功能完全对应——这是身份确认最强的直接证据。</p>
+    <p class="src">来源：官网实测（verified live）；X 账号经 <a href="https://www.topkols.com/kol/fortuneglobal_">TopKOLs 抓取</a></p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3 style="margin-top:0">「积分」= F Points（F）</h3>
+      <p>Fortune 的<strong>站内积分 / 空投权重</strong>，不是代币、不是链上资产，官网未公布任何 F 的合约。获取方式：预测市场交易、每日签到开「幸运饼干」、Council 投票、完成任务、用 Fortune Agent；邀请人可得被邀请人 F 的 10%。</p>
+      <p>官方 X 原文：F Points 记录你在平台的全部活动，持续累积、永不过期，「can be converted directly into an airdrop allocation」（可直接转换为一次空投分配）。</p>
+      <div class="callout red"><strong>但比例从未公布</strong>官方从未公布 F 兑换 $FORTUNE 的比例、快照规则或分配总量。截至 2026-10-14 的官方 Medium 还明确写着快照日期未公布。</div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">「卡牌」= Fortune Node NFT <span class="tag amber">置信度高 · 非 100%</span></h3>
+      <p>Fortune 生态里<strong>唯一的 NFT / 卡类资产</strong>就是 Node NFT，未发现任何其他官方「卡牌」产品。群里「积分 + 卡牌」打包卖的模式，与 Node NFT「买即得 40,000 F」的机制完全吻合。未看到群内 NFT 合约地址或图片，无法 100% 排除是别的卡类资产；且 Node NFT 官方图是一只幸运饼干，并非卡片造型。</p>
+      <ul>
+        <li>总量 <strong>3,000 张</strong>（官网 FAQ 原文）</li>
+        <li>第二轮价格 <strong>300 USDT</strong>，先到先得；每人限购 1 张</li>
+        <li>买后即时得 <strong>40,000 base F</strong>，一次性发放、立即生效</li>
+        <li>每日 F <strong>1.1 倍</strong>加成（日常互动与直接奖励均 ×1.1）</li>
+        <li>第一轮 3,000 张不到 10 天售罄（官方 X）；第一轮单价官方未公布</li>
+      </ul>
+      <p class="src">来源：官网 <a href="https://fortuneprotocol.io/node">/node 页</a>实测；第一轮售罄见 <a href="https://twiscan.com/en/x/fortuneglobal_/2101280822146040085">Twiscan 镜像</a></p>
+    </div>
+  </div>
+
+  <div class="card amber">
+    <h3 style="margin-top:0">⚠ Node 页自己的数据就是坏的</h3>
+    <p>官网 Node 页当前销售数字自相矛盾：「sold 2,500 / 0」「Sales Progress 2,500 / 0」「Remaining: −2,500」「Infinity%」，未连钱包时铸造价显示「-- USDT」。按总量 3,000 推断「已售 2,500、余 500」是合理解释，但分母为 0 是明显的前端 / 数据 bug——<strong>2,500 这个数字本身也不宜直接采信</strong>。另外总量口径冲突：第一轮已售 3,000 张，第二轮官方 X 又说「Only 3,000 NFTs will ever exist」，官网又说第二轮总量 3,000——<strong>到底总共 3,000 还是 6,000 张，官方口径不一致，未核实</strong>。</p>
+    <p>第二轮官方 X 曾宣传权益含「Platform Fee Dividends（平台手续费分红）」，但官网现行表述已大幅弱化为持有人「may be eligible to access designated ecosystem features」，分红比例、金额、发放方式均未公布，且标注「Contribution Value: Not Included」。<strong>分红不要计入估值。</strong></p>
+    <p class="src">来源：官网 /node 实测；Phase 2 开铸见 <a href="https://twiscan.com/en/x/fortuneglobal_/2097997831818899697">Twiscan 镜像</a></p>
+  </div>
+
+  <h3>F 积分转账：官方功能真实存在，但有两道硬限制</h3>
+  <p>官网 <a href="https://fortuneprotocol.io/profile">/profile 页</a>实测：TOTAL F 框右上角有转账图标，点击弹出「Transfer F」窗口（收款地址、金额、余额、MAX、确认）。弹窗原文规则：<strong>「One transfer per day, each transfer up to the balance of 99%.」</strong>——每天只能转 1 次，单次至多转出余额的 99%。</p>
+  <ul>
+    <li><strong>「10w 积分」一次最多到账 99,000</strong>，剩下的 1% 次日再转 99%，以此类推，理论上永远转不干净；</li>
+    <li><strong>没法「小额验货」</strong>：试转一笔小额，就把当天唯一一次机会用掉了；</li>
+    <li>转账是否链上交易、是否可撤销、是否收费、是否会被风控或快照排除——官网均未说明，<strong>未核实</strong>。</li>
+  </ul>
+  <div class="callout amber"><strong>场外买卖官方允不允许？没有表态。</strong>官网、GitBook 文档、白皮书、官方 Medium 均未检索到允许或禁止 OTC 的条款。转账是中性产品功能，不能解读成官方背书场外交易；也没有条文说卖积分会封号。定性：灰色地带、无保障。</div>
+</section>
+
+<!-- 2 TEAM -->
+<section id="team">
+  <h2><span class="no">02 / TEAM &amp; FUNDING</span>团队与背书：半匿名，两轮真融资</h2>
+  <p class="lede">项目真实性的主要支撑在这一节；团队可追责程度则是主要扣分项。</p>
+
+  <h3>团队：只有一位公开 CEO，其余查不到</h3>
+  <ul>
+    <li><strong>CEO：Celine</strong>，X <span class="mono">@celiniawarner</span>。证据：官方 X 称「Fortune CEO @celiniawarner attended Web3Week Asia 2026」；2026-11-06 周度 AMA 由 Celine 主持。除名字与 X 账号外，<strong>无公开履历</strong>（教育、过往项目均未核实）。</li>
+    <li><strong>联合创始人信息互相打架</strong>：Preqin 付费库预览称公司由 Angela Vaughan 共同创立、总部香港、成立于 2025 年；CB Insights 称总部英国伦敦、成立 2026 年、CTO 为 Faishal Ridha，且档案未被公司认领。两者矛盾，<strong>均不可全信</strong>；Celine 与 Angela Vaughan 是否同一人，未核实。</li>
+    <li>CertiK 明确标注团队 <strong>「Not Verified By CertiK」，KYC：No</strong>。</li>
+  </ul>
+  <p>结论：与纯匿名土狗相比稍好（CEO 公开露面），但远达不到实名可追责标准。<strong>这是主要风险点之一。</strong></p>
+  <p class="src">来源：<a href="https://www.topkols.com/kol/fortuneglobal_">TopKOLs</a> · <a href="https://www.preqin.com/data/profile/asset/fortune-cookie-protocol/800247">Preqin</a> · <a href="https://www.cbinsights.com/compare/augur1-vs-fortune-protocol">CB Insights</a> · <a href="https://skynet.certik.com/projects/fortune-protocol">CertiK</a></p>
+
+  <h3>融资：两轮已证实，总额 &gt;$4M，细账不公开</h3>
+  <div class="tbl-wrap"><table class="stack-tbl">
+    <thead><tr><th>轮次</th><th>日期</th><th>已披露投资方</th><th>金额</th></tr></thead>
+    <tbody>
+      <tr><td data-l="轮次"><strong>种子轮 Seed</strong></td><td data-l="日期">2026-05-11（官方宣布）</td><td data-l="投资方">TBV、Cogitent Ventures、X21 Digital、CGV FoF、K24 Ventures、LandScape Capital</td><td data-l="金额">未披露</td></tr>
+      <tr><td data-l="轮次"><strong>Pre-A 轮</strong></td><td data-l="日期">2026-08-03 / 04（宣布）</td><td data-l="投资方">MH Ventures、Mapleblock Capital、NewTribe Capital、Basics Capital、Everwood Capital；NOX Ventures 任本轮顾问</td><td data-l="金额">未披露</td></tr>
+      <tr><td data-l="轮次"><strong>合计</strong></td><td data-l="日期">2026-08-21 官方披露</td><td data-l="投资方">多轮融资总额超过 400 万美元</td><td data-l="金额"><strong>&gt;$4M</strong>（仅此总数）</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">注意一：种子轮 The Block 稿件文末注明为 Fortune 付费委托稿、非 The Block 背书。注意二：CryptoRank 融资页显示「Raised $0.00 / Not disclosed」是数据缺失，别理解成零融资。注意三：投资方名单中有多家真实存在的加密 VC，但<strong>没有任何一家在其官网 / 官方 X 被本研究独立核实为已确认投资</strong>——均为项目方宣布 + 媒体转载。融资真实性置信度中高，但非铁证。</p>
+  <p class="src">来源：<a href="https://www.theblock.co/sponsored/2026-05-11-fortune-protocol-completes-seed-round-financing-accelerating-ai-powered-prediction-market-innovation-400668">The Block（赞助稿）</a> · <a href="https://www.gate.com/blog/ai-and-prediction-markets-fortune-protocol-seed-funding-and-on-chain-liquidity-mechanism-analysis">Gate 博客</a> · <a href="https://financefeeds.com/fortune-protocol-moves-to-unify-prediction-market/">FinanceFeeds</a> · <a href="https://www.chaincatcher.com/en/article/2280093">ChainCatcher（Pre-A）</a> · <a href="https://www.chaincatcher.com/en/article/2284417">ChainCatcher（总额 &gt;$4M）</a></p>
+
+  <h3>与 Binance / BNB Chain 的关系：只有生态位，没有官方背书</h3>
+  <ul>
+    <li><span class="tag green">已证实</span> 部署在 BNB Chain；已上架 BNB Chain 官方 Dapp 目录 <a href="https://dappbay.bnbchain.org/detail/fortune">DappBay</a>（DeFi #17）。但目录收录 <strong>≠</strong> Binance 投资、资助或背书。</li>
+    <li><span class="tag red">未证实</span> MVB 入选、BNB Chain Grant、Binance Labs / YZi Labs 投资——检索中<strong>没有任何证据</strong>。</li>
+    <li><span class="tag red">不成立</span> 「即将上线 Binance Alpha」——唯一出处是中文推广站 ToAs（见代币一节），Binance 官网、Alpha 列表、官方 X 均无此消息。Binance Square 上那条融资消息是用户转载的资讯聚合，<strong>不是 Binance 官方公告</strong>。</li>
+  </ul>
+  <div class="callout red"><strong>传言的两个混淆源</strong>① <strong>SUPERFORTUNE（$GUA）</strong>——Manta Labs 孵化的另一个项目，2025-11-27 真的上过 Binance Alpha；② <strong>Predict.fun 的 $PREDICT</strong>——Fortune 集成的底层市场之一，其代币经 Binance Wallet Prime Sale 发行（需 Alpha Points 参与）。$PREDICT 不是 $FORTUNE，两套积分也不是一回事。</div>
+</section>
+
+<!-- 3 TOKEN -->
+<section id="token">
+  <h2><span class="no">03 / TOKEN</span>代币：还没发。谁给你合约地址，谁就是假币</h2>
+  <p class="lede">$FORTUNE 处于 pre-TGE 状态：有名、有总量预览，没有价格、没有分配表、没有日期。</p>
+
+  <div class="grid2">
+    <div class="card">
+      <h3 style="margin-top:0">已确认的只有这些</h3>
+      <ul>
+        <li>代币名 <strong>Fortune / $FORTUNE</strong>，总量 <strong>1,000,000,000（10 亿）</strong>，最大供应 10 亿（CoinMarketCap 预览页 UCID 40597、Bitget）</li>
+        <li><strong>流通量 0、市值 $0.00、无价格</strong>（Bitget 与 CMC 一致；CMC 明确标注「This is a preview page」）</li>
+        <li><strong>无代币分配表、无锁仓 / 解锁表</strong>：GitBook 文档只有架构描述，没有 tokenomics 章节</li>
+        <li>CertiK 页 Token Launch Date 亦为「Not Available」</li>
+      </ul>
+      <p class="src">来源：<a href="https://coinmarketcap.com/zh/currencies/fortune-protocol/">CoinMarketCap</a> · <a href="https://www.bitget.com/price/fortune/what-is">Bitget</a> · <a href="https://fortuneprotocol.gitbook.io/fortune/fortune-ecosystem/architecture-overview">GitBook</a> · <a href="https://www.ainvest.com/news/fortune-protocol-borrowed-polymarket-liquidity-interface-isn-investment-2608/">AInvest</a></p>
+    </div>
+    <div class="card red">
+      <h3 style="margin-top:0">🚫 网上流传的「合约」全都不能信</h3>
+      <ul>
+        <li>Bitget 标注的以太坊合约 <span class="mono">0x9f00…78eb015</span> 与 2022 年旧项目 FORTUNEUM 的审计地址同批，<strong>与 2026 年的 Fortune Protocol 无官方关联证据</strong>；</li>
+        <li>BscScan 上的 BEP-20「Fortune Protocol (FORTUNE)」<span class="mono">0xae4b6e6232fdbff8187a43a3c4421d4af8ca196b</span>：总量 1,000 亿，与 CMC 的 10 亿完全不符，持有人 300,367、价格 $0，<strong>极可能是同名假币</strong>；</li>
+        <li>DEX Screener 上同名 FORTUNE/WBNB 池价格忽高忽低、流动性仅数十万美元，同样无官方链接佐证。</li>
+      </ul>
+      <p><strong>结论：官方公布之前，任何人给你的 $FORTUNE 合约地址都按假币处理。</strong></p>
+    </div>
+  </div>
+
+  <h3>TGE 时间线：「临近」已经说了至少三个月</h3>
+  <div class="tl">
+    <div><span class="d">2026-04-20 前后</span><p>产品开始交易（官网与 Node NFT 于 2026-04-06 上线，ChainCatcher）。</p></div>
+    <div><span class="d">2026-08-21</span><p>ChainCatcher 报道融资总额 &gt;$4M，并称「With the TGE approaching」（TGE 临近）。</p></div>
+    <div><span class="d">2026-09-10</span><p>第三期预测交易大赛启动，奖励为 TGE 空投权重。</p></div>
+    <div><span class="d">2026-10-14</span><p>官方 Medium：「the airdrop campaign remains open until Fortune officially announces the snapshot. <strong>The snapshot date has not been announced yet</strong>」（快照日期尚未公布）。</p></div>
+    <div><span class="d">2026-11-19（今天）</span><p><strong>仍无 TGE 日期、无快照日期、无分配查询工具。</strong></p></div>
+  </div>
+  <p class="src">来源：<a href="https://www.chaincatcher.com/en/article/2256913">ChainCatcher（上线）</a> · <a href="https://www.chaincatcher.com/en/article/2288893">ChainCatcher（大赛）</a> · <a href="https://medium.com/@io_fortune/cracking-the-cookie-episode-22-defi-is-growing-up-and-this-week-proved-it-14401c352917">官方 Medium Ep.22</a></p>
+
+  <div class="card red">
+    <h3 style="margin-top:0">「10:1 兑换」不可信 —— 唯一来源是低质量中文推广站</h3>
+    <p>该说法仅见于 <strong>ToAs（toassets.com）</strong> 两篇内容几乎复制的文章：《幸福协议零撸空投即将上线币安Alpha》称 F 积分「按 10:1 比例兑换代币」「7–15 天内开放场外交易，并计划上线币安 Alpha 板块」「购买价值 200 美元的 NFT 还可获得额外积分加成和持续分红」。</p>
+    <ul>
+      <li>该站无作者、无发布日期（配图上传于 2026-04-29）、无任何官方链接、「据官方消息」无出处；</li>
+      <li>所谓「7–15 天内开放场外交易」自 4 月底至今已过期近 7 个月；</li>
+      <li>「200 美元 NFT」与官网现行第二轮 300 USDT 不符；</li>
+      <li>官方口径只有一句「can be converted directly into an airdrop allocation」，<strong>从未提过任何比例</strong>。</li>
+    </ul>
+    <p><strong>10:1 不得作为估值依据。</strong></p>
+    <p class="src">来源（引用仅为证伪）：<a href="https://www.toassets.com/NFT/237753.html">ToAs 237753</a> · <a href="https://www.toassets.com/NFT/239073.html">ToAs 239073</a></p>
+  </div>
+
+  <h3>四种「Points」别混为一谈（官方 Medium 原文区分）</h3>
+  <div class="tbl-wrap"><table class="stack-tbl">
+    <thead><tr><th>积分</th><th>归属</th><th>对应什么</th></tr></thead>
+    <tbody>
+      <tr><td data-l="积分"><strong>F Points</strong></td><td data-l="归属">Fortune 自己</td><td data-l="对应">未来 $FORTUNE 空投权重（无比例、无日期）</td></tr>
+      <tr><td data-l="积分"><strong>Predict Points（PP）</strong></td><td data-l="归属">Predict.fun</td><td data-l="对应">$PREDICT 空投。官方原文：PP 余额不是代币余额，也没有公布兑换率</td></tr>
+      <tr><td data-l="积分"><strong>Binance Alpha Points</strong></td><td data-l="归属">币安钱包</td><td data-l="对应">与上面两者无关</td></tr>
+    </tbody>
+  </table></div>
+  <p>顺带一个参照：连已经走进 Binance 流程的 $PREDICT 都在延期——2026-10-28 Binance 公布认领方案后 10 月 30 日上市推迟，2026-11-17 Predict.fun 再宣布 TGE 与 Season 1 认领延期（目标 2–4 周内）。<strong>关联项目尚且如此，Fortune 自身 TGE 的不确定性只会更大。</strong></p>
+  <p class="src">来源：<a href="https://medium.com/@io_fortune/cracking-the-cookie-episode-25-how-to-check-your-pp-balance-and-redeem-predict-6692cffa363e">官方 Medium Ep.25</a></p>
+</section>
+
+<!-- 4 SECURITY -->
+<section id="security">
+  <h2><span class="no">04 / SECURITY</span>安全与黑历史：没查到实锤，但审计只审了边角</h2>
+
+  <div class="grid2">
+    <div class="card amber">
+      <h3 style="margin-top:0">CertiK 审计：BBB，但范围很窄</h3>
+      <ul>
+        <li>审计申请 2026-06-04，修订 2026-10-20/21</li>
+        <li><strong>范围仅 FortunateVote.sol（投票合约），共 3 个文件</strong>——不是代币合约、不是 Node NFT 合约、不是 F 积分转账逻辑</li>
+        <li>发现 14 项：0 Critical、0 High、4 Medium（1 已确认、3 已修复）、4 Low（1 部分修复、3 已修复）、5 Informational（全修复），另 1 项中心化问题已确认未修复</li>
+        <li>团队未验证、无 KYC、无 Bug Bounty、Skynet 监控未启用、成熟度「Low / Minimally Developed」</li>
+        <li>过去 90 天无安全事件（CertiK 口径）</li>
+      </ul>
+      <p class="small">别混淆：2022 年 CertiK 审的 FORTUNE（FORTUNEUM，<span class="mono">0x2d71…</span>）是另一个旧项目，与本项目无关。</p>
+      <p class="src">来源：<a href="https://skynet.certik.com/projects/fortune-protocol">CertiK Skynet 项目页</a></p>
+    </div>
+    <div class="card green">
+      <h3 style="margin-top:0">针对本尊的黑历史：未发现</h3>
+      <ul>
+        <li>中英文检索「Fortune Protocol + scam / rug / 投诉 / 跑路 / 骗局」，<strong>未找到针对 fortuneprotocol.io 的具体指控</strong>；返回的全是同名外汇 / 资金盘或「富途证券」诈骗等噪音</li>
+        <li><strong>无监管机构警告、无黑客 / 漏洞事件</strong></li>
+        <li>但：<strong>无任何金融牌照</strong>；预测市场本身在多国面临合规不确定性（Gate 博客亦提示美国 CFTC 监管趋严是行业风险）</li>
+        <li>项目仅约 7 个月历史、代币未上线——大多数矛盾要到 TGE / 快照时才爆发，「没黑历史」的样本还很短</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout red"><strong>官方已确认有冒充者在活动</strong>2026-09-19 官方 X 发文：「Beware of Fake Accounts Impersonating Fortune Protocol!」——唯一官方账号 @fortuneglobal_，社区账号仅 @io_FortuneID 与 @FortuneKorea_。其余一律按冒充处理。（<a href="https://twiscan.com/ja/x/fortuneglobal_/2101163744730739138">Twiscan 镜像</a>）</div>
+</section>
+
+<!-- 5 LOOKALIKES -->
+<section id="lookalikes">
+  <h2><span class="no">05 / LOOKALIKES</span>同名仿盘地图：这才是真正的坑集中地</h2>
+  <p class="lede">「Fortune」这个名字被至少六个无关项目共用，其中两个是资金盘模板。认错一个，钱就没了。</p>
+  <div class="tbl-wrap"><table class="stack-tbl">
+    <thead><tr><th>名称 / 域名</th><th>是什么</th><th>与本尊关系</th><th>风险定性</th></tr></thead>
+    <tbody>
+      <tr><td data-l="名称"><strong>A · Fortune Protocol</strong><br><span class="mono">fortuneprotocol.io</span></td><td data-l="是什么">BNB Chain 预测市场聚合 + F Points + Node NFT，$FORTUNE 未上线</td><td data-l="关系"><span class="tag green">本尊</span></td><td data-l="定性">真实早期项目，高风险（pre-TGE）</td></tr>
+      <tr><td data-l="名称"><strong>B · “The Fortune Protocol”</strong><br><span class="mono">thefortuneprotocol.io / .com、thefortunex.live、fortuneprotocol.live</span></td><td data-l="是什么">存 USDC 赚约 1%/天、25 级推荐、10 级 Rank、FRX 代币总量 11,400,000</td><td data-l="关系"><span class="tag red">无关</span></td><td data-l="定性"><strong>极高风险，HYIP / 庞氏结构</strong>：固定日收益 + 多级拉人头，站点自认「DEMO FEED」演示数据。勿存款</td></tr>
+      <tr><td data-l="名称"><strong>C · FortuneX Gold / FRXG</strong><br><span class="mono">fortunexgold.live</span></td><td data-l="是什么">FRXG V2，BSC，2026-08-21 开始交易；总量 11,400,000，与 B 的 FRX 分配完全相同，疑似同一模板换皮</td><td data-l="关系"><span class="tag red">无关</span></td><td data-l="定性"><strong>极高风险</strong>：Cyberscope 审计列明合约可增发、可拉黑、<strong>可划转用户代币</strong>、可暂停转账、未放弃权限；前两名持仓合计约 99%（74% + 25%）；市值 $0</td></tr>
+      <tr><td data-l="名称"><strong>D · $FULU</strong><br><span class="mono">fulu.netlify.app</span></td><td data-l="是什么">「好运护符」文化币，BSC，总量 1 亿，合约 <span class="mono">0x0C1dbA8D7e5a696b511EcC9934F8cdF9a370f115</span></td><td data-l="关系"><span class="tag red">无关</span></td><td data-l="定性">无团队、无审计、无上市证据的 meme 币，托管在免费 netlify 子域；未证实为诈骗，但无背书</td></tr>
+      <tr><td data-l="名称"><strong>E · Fortune Foes</strong><br><span class="mono">fortunefoes.com</span></td><td data-l="是什么">Robinhood Chain 熊牛 RWA GameFi，NFT 2026-09-15 发售；其「Fortune Points」是白名单积分（Iron–Diamond 五档）</td><td data-l="关系"><span class="tag red">无关</span>，仅积分撞名</td><td data-l="定性">未发币，积分只决定铸造折扣；勿与 F Points 互通</td></tr>
+      <tr><td data-l="名称"><strong>F · FRTN / Fortune Token</strong><br>EbisusBay，Cronos</td><td data-l="是什么">Cronos 老牌 NFT 市场平台币，现价约 $0.00007，较 2023 年高点跌约 99.9%，市值约 $3–5 万，日成交仅约 $100–400</td><td data-l="关系"><span class="tag red">无关</span></td><td data-l="定性">老项目残值币，与 2026 年的 Fortune Protocol 无任何关系</td></tr>
+      <tr><td data-l="名称"><strong>G · SUPERFORTUNE $GUA</strong></td><td data-l="是什么">Manta Labs 孵化，AI + 玄学预测市场；2025-11-27 真的上线 Binance Alpha</td><td data-l="关系"><span class="tag red">无关</span></td><td data-l="定性">「币安 Alpha + Fortune」传言最可能的混淆源</td></tr>
+    </tbody>
+  </table></div>
+  <p>B 与 C 的代币经济数字完全一致（总量 11,400,000；流动性 20% = 2,280,000；质押 19% = 2,166,000 等），强烈提示同一套模板 / 同一运营方批量换皮。另有 Fortune Bets、2023 年 FORTUNE COOKIE 老币、Fortune DAO GEN 等更多同名噪音，均与本项目无关。</p>
+  <p class="src">来源：<a href="https://www.thefortuneprotocol.io/">thefortuneprotocol.io</a> · <a href="https://www.fortunexgold.live/">fortunexgold.live</a> · <a href="https://www.cyberscope.io/audits/frxg">Cyberscope FRXG 审计</a> · <a href="https://fulu.netlify.app/">fulu.netlify.app</a> · <a href="https://fortunefoes.com/">fortunefoes.com</a> · <a href="https://coingecko.com/en/coins/ebisusbay-fortune/">CoinGecko FRTN</a></p>
+</section>
+
+<!-- 6 OTC -->
+<section id="otc">
+  <h2><span class="no">06 / OTC RISK</span>场外交易：先算账，再看骗局手法</h2>
+  <p class="lede">截图报价币种未注明（「60刀」像美元，「290」则未必），两种情形都算给你看。以下为算术演示，不是估值。</p>
+
+  <h3>情形 A：数字是美元 / USDT</h3>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>报价</th><th class="num">对照官方价</th><th>意味着什么</th></tr></thead>
+    <tbody>
+      <tr><td>单卡 $60–100</td><td class="num">铸造价 $300</td><td><strong>折价 67%–80%</strong>；即便按推广站所称第一轮 $200 计，仍折价 50%–70%</td></tr>
+      <tr><td>10w 积分 + 1 张卡牌 = $290</td><td class="num">≈ 一张卡的铸造价</td><td>即 <strong>10 万积分在打包价里约等于 $0</strong>（或卡牌微折、积分白送）</td></tr>
+      <tr><td>若「10:1」为真</td><td class="num">100,000 F = 10,000 代币</td><td>打包价 $290 且卡牌本身值 $300，则代币隐含价值为负——<strong>报价与 10:1 无法自洽</strong>，再次说明 10:1 不可信，或报价中的「卡牌」不是 300 USDT 的 Node NFT</td></tr>
+    </tbody>
+  </table></div>
+  <h3>情形 B：数字是人民币（QQ 群常见）</h3>
+  <p>¥290 ≈ $40，仅为官方铸造价的约 13%；单卡 ¥60–80 亦然。折价大到不合常理，更可能指向：急于离场的亏损卖家、并非 Node NFT 的便宜卡、或<strong>诱饵报价</strong>（先报低价引流，交易时再变卦 / 换人）。</p>
+  <div class="callout amber"><strong>一个只能看、不能用的锚</strong>按官方铸造结构，300 USDT 买卡即得 40,000 F，若把卡的全部价值都算在 F 上，每 F ≈ $0.0075，10 万 F ≈ $750，打包价 $290 远低于此。但这个锚本身无意义：40,000 F 只是赠品，卡的价值还含 1.1 倍加成与未兑现的分红承诺，且<strong>没有任何人按 $0.0075/F 收过积分</strong>。别拿它当「便宜」的依据。</div>
+  <p><strong>结论：无论按哪种币种，场外价都远低于官方铸造价。</strong>合理解释只有四种，且都对买方不利或存疑：① 卖家对 TGE 失望、割肉离场（「卡牌不上线不值钱」正是这种情绪）；② 市场根本不信官方价，认为 300 USDT 定价过高；③ 卖的不是 Node NFT；④ 报价是骗局诱饵。<strong>折价本身不是捡漏证据，是风险信号。</strong></p>
+
+  <h3>针对这个项目的 9 种具体坑法</h3>
+  <ol>
+    <li><strong>先款后货，卖家消失。</strong>QQ 交易无托管、无仲裁、无退款。反过来卖家先转、买家不付，卖家同样受害——于是骗子常冒充「中介 / 担保」介入。</li>
+    <li><strong>假中介。</strong>克隆群主 / 中介的头像昵称私聊你：「款打给我，我担保。」官方已警告假账号泛滥，QQ 群内更难分辨。</li>
+    <li><strong>假截图。</strong>积分余额截图可用开发者工具、另一个账号、P 图伪造。唯一可信的验证是卖家当面在官网完成一次真实转账到你的地址——但这与下一条冲突。</li>
+    <li><strong>「每天 1 次转账」陷阱。</strong>卖家先转一笔小额「验货」，当天就不能再转大额；分多日转则要承担隔夜风险（快照、跑路、价格变动）。<strong>任何「先付全款、明天再转」的安排都应拒绝。</strong></li>
+    <li><strong>99% 上限陷阱。</strong>按 10 万报价付款、只收到 9.9 万，是规则使然，不是卖家克扣——交易前必须把这一点算进价格。</li>
+    <li><strong>假卡 / 假 NFT。</strong>Node NFT 的官方合约地址未在官网公布，你<strong>无法</strong>在 BscScan 上独立验证「这张卡是不是真的」。骗子可铸造同名同图的假 NFT 卖给你。</li>
+    <li><strong>「单卡牌不要」的含义。</strong>买方只要打包、不要单卡，说明单卡几乎没有二级市场：卡的价值主要来自附带的 40,000 F 与 1.1 倍加成，而二手卡转让后加成是否保留、基础 F 是否还在原账户，官网均未说明。买到单卡，可能只剩一个无明确权益的 NFT。</li>
+    <li><strong>快照 / 女巫风险</strong>（未证实、须警惕）。项目方从未说明受让积分是否计入空投、是否会被视为女巫 / 刷分排除。快照规则公布前，受让积分存在被清零或打折的制度风险，且买方无法事前验证。</li>
+    <li><strong>与仿盘混淆。</strong>有人可能拿仿盘地图里 B / C / D / E / F 的代币或「卡」冒充本尊资产卖给你，或发仿站链接诱导你连钱包授权。<strong>只认 fortuneprotocol.io 一个域名与 @fortuneglobal_ 一个 X 账号。</strong></li>
+  </ol>
+
+  <div class="card red">
+    <h3 style="margin-top:0">「卡牌不上线不值钱」——这句话基本是对的</h3>
+    <ul>
+      <li><strong>F 积分 → $0</strong>：积分唯一公开用途是兑换未来空投分配；无 TGE 即无分配。积分不能提现、不能换 BNB、不能兑换任何实物（Profile 页的「Withdraw BNB」是邀请 / 交易奖励的 BNB，与 F 无关）。</li>
+      <li><strong>Node NFT → 接近 $0 的收藏品</strong>：分红依赖平台手续费，而手续费规模从未披露（AInvest 指出 Fortune 未披露 Polymarket 侧成交量数据）；官网现行表述已把分红弱化为「可能有资格参与生态功能」。无官方二手交易场所，QQ 群报价已显示流动性枯竭（单卡无人要）。</li>
+      <li><strong>时间成本</strong>：自 2026-08-21 称「TGE 临近」至今近 3 个月无日期；Predict.fun 的延期先例表明「临近」可以无限延长。持有期间资金完全锁定，无利息、无退出通道。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 7 SENTIMENT -->
+<section id="sentiment">
+  <h2><span class="no">07 / SENTIMENT</span>社区情绪与数据可验证性</h2>
+  <div class="grid2">
+    <div class="card green">
+      <h3 style="margin-top:0">正面信号（有来源）</h3>
+      <ul>
+        <li>产品真实运转：官网可访问，市场 / 投票 / 签到 / Agent 功能齐全；2026-08-25 集成 Polymarket CLOB v2，与 Predict.fun 并列聚合（FinanceFeeds）</li>
+        <li>融资与机构名单真实可查，总额 &gt;$4M</li>
+        <li>Node NFT 第一轮 3,000 张 &lt;10 天售罄（官方 X）；第二轮官网显示已售 2,500 张（数字本身有 bug）</li>
+        <li>X 粉丝约 5–6.5 万（TopKOLs 2026-11-16 测得 50.2K、7 日 −7.6%；Twiscan 镜像显示 65.4K——两来源口径 / 时点不同，勿引用单一数字）；Telegram 约 22,287 用户、日活 216（CertiK 监测）</li>
+        <li>官方 Medium 持续更新至 2026 年 11 月，团队仍在运营</li>
+      </ul>
+    </div>
+    <div class="card red">
+      <h3 style="margin-top:0">质疑信号（有来源）</h3>
+      <ul>
+        <li><strong>AInvest</strong>：Fortune 只是借用 Polymarket 的流动性，「has not disclosed specific volume or liquidity figures… The books are on loan.」——聚合器的价值取决于更优执行，目前无数据证明</li>
+        <li><strong>Gate</strong>：119,000 用户 / 2.14M 交易产生于积分激励期，能否持续待观察；核心卖点「AI 流动性引擎」仍是路线图承诺，非已交付能力</li>
+        <li><strong>数据不可复核</strong>：DappBay 2026-11-19 实测，Fortune 今日交易量与用户数均显示「- / No Data」，5 月宣称的 119,330 用户 / 2.14M 交易无法在当前页面复核；DappBay Reviews 为 0 条</li>
+        <li>官网数据 bug 与总量口径冲突（3,000 vs 6,000 张）损害可信度</li>
+        <li>CertiK：团队未验证、无 Bug Bounty、成熟度低</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 8 CHECKLIST -->
+<section id="checklist">
+  <h2><span class="no">08 / CHECKLIST</span>真要在 QQ 群下手之前，逐项过一遍</h2>
+  <h3>先决条件（任一不满足，就别交易）</h3>
+  <ul class="check">
+    <li>我确认只认 <b>fortuneprotocol.io</b> 与 <b>@fortuneglobal_</b>，拒绝一切其他域名、私聊链接与「客服」。</li>
+    <li>我接受：这笔钱可能<b>全部归零</b>（TGE 永不发生、快照排除转让积分、项目方改规则）。</li>
+    <li>我花的钱是即使全损也不影响生活的金额。</li>
+  </ul>
+  <h3>交易前核验</h3>
+  <ul class="check">
+    <li>让卖家在官网 /profile <b>当面</b>（视频 / 共享屏幕）展示 TOTAL F 余额与 Node NFT 持有情况，<b>不接受静态截图</b>。</li>
+    <li>问清币种：「290」「80」「60刀」到底是 USDT、美元还是人民币，并换算成与 300 USDT 铸造价可比的口径。</li>
+    <li>问清「卡牌」是哪一轮 Node NFT，要求提供 NFT 合约地址与 Token ID——并清楚官网未公布官方合约、<b>你无法独立验证真伪</b>。</li>
+    <li>把「每天 1 次、单次至多 99%」算进价格：10 万积分第一天最多到账 99,000；如需分多日转，约定每一步的付款节奏，<b>绝不一次付全款</b>。</li>
+    <li>确认卡牌转让后 40,000 base F 与 1.1 倍加成是否保留——官网未说明，<b>默认按「不保留」做最坏打算</b>。</li>
+    <li>拒绝任何「中介」：QQ 群无官方担保中介；自称群主 / 官方人员私聊你的人，先假定为骗子。</li>
+    <li>绝不连接陌生网站、不签授权交易、不提供助记词 / 私钥、不扫陌生二维码。官方 Medium 原文：「Never share your seed phrase… No official Fortune or Predict.fun representative will ever ask for it.」</li>
+  </ul>
+  <h3>交易后</h3>
+  <ul class="check">
+    <li>收到积分后立即在官网核对余额；收到 NFT 后确认在钱包中可见并可转让。</li>
+    <li>保留全部聊天记录、转账凭证与对方 QQ 号 / 钱包地址；被骗后立即报警并向腾讯举报——<b>同时认清追回概率极低</b>（链上转账不可逆、QQ 交易无托管）。</li>
+    <li>持续跟踪官方渠道的快照 / TGE 公告；快照规则一旦公布，立即重新评估受让积分是否有效。</li>
+  </ul>
+</section>
+
+<!-- 9 UNKNOWN -->
+<section id="unknown">
+  <h2><span class="no">09 / OPEN QUESTIONS</span>未能核实 / 待确认事项</h2>
+  <p class="lede">以下每一项都查过、但没有可靠答案。如实标注，不猜。</p>
+  <ol>
+    <li>Node NFT 第一轮单价（推广站称 $200，未证实）；Node NFT 总量到底是 3,000 还是 6,000 张（官方口径冲突）。</li>
+    <li>$FORTUNE 官方合约地址、代币分配表、锁仓 / 解锁表、TGE 日期、快照日期、F 兑换比例——<strong>全部未公布</strong>。</li>
+    <li>F 积分转账是否链上交易、是否可撤销、是否收费、转让积分是否计入空投 / 是否会被风控排除。</li>
+    <li>Node NFT 转让后权益（40,000 base F、1.1 倍加成、平台分红）是否保留；分红金额 / 费率从未公布。</li>
+    <li>团队履历：CEO Celine 与 Preqin 所称联合创始人 Angela Vaughan 的关系、总部所在地（香港 vs 伦敦）、CTO 身份。</li>
+    <li>投资方是否在其官方渠道确认过投资；DappBay 5 月数据（119,330 用户 / 2.14M 交易）无法在今日页面复核。</li>
+    <li>QQ 群报价的币种与「卡牌」具体所指（本报告按任务描述与官网产品对应推断，未见原始截图与 NFT 合约）。</li>
+    <li>官网 Node 页「已售 2,500 / 0、剩余 −2,500、Infinity%」是前端 bug 还是数据造假，无法判定。</li>
+  </ol>
+</section>
+
+<!-- 10 SOURCES -->
+<section id="sources">
+  <h2><span class="no">10 / SOURCES</span>全部来源</h2>
+  <details open><summary>官网实测（verified live，2026-11-19，未连接钱包）</summary><div class="det-in"><ul class="sources">
+    <li><a href="https://fortuneprotocol.io/">fortuneprotocol.io</a> 及 <a href="https://fortuneprotocol.io/node">/node</a>、<a href="https://fortuneprotocol.io/fortune">/fortune</a>、<a href="https://fortuneprotocol.io/profile">/profile</a> —— Node NFT 参数、Transfer F 弹窗、第二轮 300 USDT、总量 3,000、40,000 base F、1.1× 加成、销售数字 bug</li>
+    <li><a href="https://dappbay.bnbchain.org/detail/fortune">dappbay.bnbchain.org/detail/fortune</a> —— DappBay 上架（DeFi #17），今日统计无数据，Reviews 0</li>
+    <li><a href="https://fortuneprotocol.gitbook.io/fortune/fortune-ecosystem/architecture-overview">GitBook 架构文档</a> —— 无 tokenomics 章节</li>
+  </ul></div></details>
+  <details><summary>融资与进展</summary><div class="det-in"><ul class="sources">
+    <li><a href="https://www.theblock.co/sponsored/2026-05-11-fortune-protocol-completes-seed-round-financing-accelerating-ai-powered-prediction-market-innovation-400668">The Block（赞助稿）</a> —— 种子轮，文末注明付费委托</li>
+    <li><a href="https://www.gate.com/blog/ai-and-prediction-markets-fortune-protocol-seed-funding-and-on-chain-liquidity-mechanism-analysis">Gate 博客</a> —— 种子轮分析、DappBay 数据与保留意见</li>
+    <li><a href="https://financefeeds.com/fortune-protocol-moves-to-unify-prediction-market/">FinanceFeeds</a> —— Pre-A 轮、Polymarket 集成（2026-08-25）</li>
+    <li><a href="https://www.chaincatcher.com/en/article/2280093">ChainCatcher</a> —— Pre-A 轮（2026-08-03）</li>
+    <li><a href="https://www.chaincatcher.com/en/article/2284417">ChainCatcher</a> —— 融资总额 &gt;$4M、「TGE 临近」（2026-08-21）</li>
+    <li><a href="https://www.chaincatcher.com/en/article/2256913">ChainCatcher</a> —— 官网与 Node NFT 上线（2026-04-06）</li>
+    <li><a href="https://www.chaincatcher.com/en/article/2288893">ChainCatcher</a> —— 第三期交易大赛与 TGE 空投权重（2026-09-10）</li>
+    <li><a href="https://www.binance.com/en/square/post/08-21-2026-fortune-protocol-raises-over-4-million-across-multiple-funding-rounds-358036426160091">Binance Square 转载</a> —— 融资消息（非 Binance 官方公告）</li>
+    <li><a href="https://cryptorank.io/drophunting/fortune-protocol-activity1175">CryptoRank</a> —— F-Point 活动、Reward Date TBA</li>
+    <li><a href="https://www.preqin.com/data/profile/asset/fortune-cookie-protocol/800247">Preqin 预览</a> —— Angela Vaughan、香港（与 CB Insights 冲突，低可信度）</li>
+    <li><a href="https://www.cbinsights.com/compare/augur1-vs-fortune-protocol">CB Insights</a> —— 伦敦、CTO Faishal Ridha（未认领档案）</li>
+    <li><a href="https://naut.so/projects/fortune-protocol">NAUT</a> —— 融资页（Pre-A 2026-08-03）</li>
+  </ul></div></details>
+  <details><summary>代币与审计</summary><div class="det-in"><ul class="sources">
+    <li><a href="https://coinmarketcap.com/zh/currencies/fortune-protocol/">CoinMarketCap 预览页</a> —— 总量 10 亿、流通 0</li>
+    <li><a href="https://www.bitget.com/price/fortune/what-is">Bitget</a> —— 流通 0、市值 $0</li>
+    <li><a href="https://skynet.certik.com/projects/fortune-protocol">CertiK Skynet</a> —— BBB、仅审 FortunateVote.sol、14 项发现、团队未验证</li>
+    <li><a href="https://www.ainvest.com/news/fortune-protocol-borrowed-polymarket-liquidity-interface-isn-investment-2608/">AInvest</a> —— 代币未上市、未披露成交量的质疑</li>
+    <li><a href="https://bscscan.com/token/0xae4b6e6232fdbff8187a43a3c4421d4af8ca196b?a=0x13a98600ab76b4667d5a605aae5766eb53914f82">BscScan 同名 FORTUNE 代币</a> —— 100B 总量，疑似假币</li>
+    <li><a href="https://certik-public-assets.s3.amazonaws.com/CertiK-Audit-for-FORTUNE-v14.pdf">2022 年旧 FORTUNEUM 审计（PDF）</a> —— 与本项目无关，列出以防混淆</li>
+  </ul></div></details>
+  <details><summary>官方社媒与博客（经镜像 / 抓取）</summary><div class="det-in"><ul class="sources">
+    <li><a href="https://www.topkols.com/kol/fortuneglobal_">TopKOLs @fortuneglobal_</a> —— CEO @celiniawarner、F Points 说明</li>
+    <li><a href="https://twiscan.com/en/x/fortuneglobal_/2101280822146040085">Twiscan</a> —— Node NFT 第一轮售罄（3,000 张、&lt;10 天）</li>
+    <li><a href="https://twiscan.com/en/x/fortuneglobal_/2097997831818899697">Twiscan</a> —— Node NFT Phase 2 开铸</li>
+    <li><a href="https://twiscan.com/ja/x/fortuneglobal_/2101163744730739138">Twiscan</a> —— 官方防冒充警告（2026-09-19）</li>
+    <li><a href="https://medium.com/@io_fortune/cracking-the-cookie-episode-22-defi-is-growing-up-and-this-week-proved-it-14401c352917">官方 Medium Ep.22</a> —— 快照日期未公布（2026-10-14）</li>
+    <li><a href="https://medium.com/@io_fortune/cracking-the-cookie-episode-25-how-to-check-your-pp-balance-and-redeem-predict-6692cffa363e">官方 Medium Ep.25</a> —— PP / $PREDICT / F Points / Alpha Points 四者区分</li>
+  </ul></div></details>
+  <details><summary>传言源头（低质量，引用仅为证伪）</summary><div class="det-in"><ul class="sources">
+    <li><a href="https://www.toassets.com/NFT/237753.html">ToAs 237753</a> —— 「10:1、7–15 天 OTC、币安 Alpha、200 美元 NFT」唯一出处</li>
+    <li><a href="https://www.toassets.com/NFT/239073.html">ToAs 239073</a> —— 同站复制文章</li>
+  </ul></div></details>
+  <details><summary>同名项目区分</summary><div class="det-in"><ul class="sources">
+    <li><a href="https://www.thefortuneprotocol.io/">thefortuneprotocol.io</a> —— 资金盘站（约 1%/天、25 级推荐、FRX 11,400,000）</li>
+    <li><a href="https://www.fortunexgold.live/">fortunexgold.live</a> 与 <a href="https://www.cyberscope.io/audits/frxg">Cyberscope FRXG 审计</a> —— 可增发 / 拉黑 / 划转用户代币、持仓 74%+25%</li>
+    <li><a href="https://fulu.netlify.app/">fulu.netlify.app</a> —— $FULU（合约 0x0C1dbA8D7e5a696b511EcC9934F8cdF9a370f115）</li>
+    <li><a href="https://fortunefoes.com/">fortunefoes.com</a> 与 <a href="https://airdrops.io/fortune-foes/">airdrops.io</a> —— Fortune Foes（Robinhood Chain）</li>
+    <li><a href="https://www.mexc.com/lt-LT/price/fortune-token/info">MEXC</a>、<a href="https://coingecko.com/en/coins/ebisusbay-fortune/">CoinGecko</a>、<a href="https://whattofarm.io/tokens/ebisusbay-fortune-frtn">whattofarm.io</a> —— FRTN / EbisusBay（Cronos）</li>
+    <li><a href="https://ventureburn.com/what-is-superfortune/">VentureBurn</a> 与 <a href="https://followin.io/en/feed/21611491">Followin</a> —— SUPERFORTUNE $GUA（真正上过 Binance Alpha）</li>
+  </ul></div></details>
+</section>
+
+<footer>
+  <p>本页为 2026-11-19 的一次性尽调快照，内容固定于研究当日，不会自动更新。所有关键数值均附来源；标注「未证实 / 未核实」者请勿当作事实引用。本页不构成投资建议。</p>
+</footer>
+
+</div>
+</body>
+</html>
